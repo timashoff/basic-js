@@ -2,7 +2,7 @@ const { NotImplementedError } = require('../extensions/index.js');
 
 const MODERN_ACTIVITY = 15;
 const HALF_LIFE_PERIOD = 5730;
-
+const K = 0.693 / HALF_LIFE_PERIOD
 /**
  * Determine the age of archeological find by using
  * given MODERN_ACTIVITY and HALF_LIFE_PERIOD values
@@ -22,7 +22,7 @@ function dateSample(sampleActivity) {
   // remove line with error and write your code here
   if (typeof sampleActivity !== 'string' || isNaN(sampleActivity) || sampleActivity <= 0 || sampleActivity > 15) return false
 
-  return Math.ceil(Math.log(MODERN_ACTIVITY / sampleActivity) / (0.693 / HALF_LIFE_PERIOD))
+  return Math.ceil(Math.log(MODERN_ACTIVITY / sampleActivity) / K)
 }
 
 module.exports = {

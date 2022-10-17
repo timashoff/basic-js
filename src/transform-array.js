@@ -34,9 +34,8 @@ function transform(arr) {
     else result.push(arr[i])
   }
 
-  return result
-    .filter(i => i !== discardPrev)
-    .filter(i => i)
+  return result.filter(i => i && i !== discardPrev)
+
 
 }
 

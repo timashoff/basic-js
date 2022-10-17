@@ -20,13 +20,62 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+
+  constructor(reverse = true) {
+    this.reverse = reverse
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+
+  encrypt(message, key) {
+    if (!message || !key) throw new Error(`Incorrect arguments!`)
+
+    const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const ABC_LENGTH = ABC.length
+    key = key.toUpperCase()
+    message = message.toUpperCase()
+
+    let result = ''
+
+    while (key.length <= message.length) key += key
+
+    for (let i = 0; i < message.length; i++) {
+
+      if (message[i].match(/[A-Z]/g)) {
+        let indx = ((ABC_LENGTH + ABC.search(message[i]) + ABC.search(key[i])) % ABC_LENGTH)
+        result += ABC[indx % ABC_LENGTH]
+      } else {
+        result += message[i]
+        key = key.slice(0, i) + message[i] + key.slice(i)
+      }
+
+    }
+    return this.reverse ? result : result.split('').reverse().join('')
+  }
+
+  decrypt(message, key) {
+
+    if (!message || !key) throw new Error(`Incorrect arguments!`)
+
+    const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const ABC_LENGTH = ABC.length
+    key = key.toUpperCase()
+    message = message.toUpperCase()
+
+    let result = ''
+
+    while (key.length <= message.length) key += key
+
+    for (let i = 0; i < message.length; i++) {
+
+      if (message[i].match(/[A-Z]/g)) {
+        let indx = ((ABC_LENGTH + ABC.search(message[i]) - ABC.search(key[i])) % ABC_LENGTH)
+        result += ABC[indx % ABC_LENGTH]
+      } else {
+        result += message[i]
+        key = key.slice(0, i) + message[i] + key.slice(i);
+      }
+
+    }
+    return this.reverse ? result : result.split('').reverse().join('')
   }
 }
 
